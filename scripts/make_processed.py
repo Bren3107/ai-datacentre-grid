@@ -1,7 +1,7 @@
 """Role A: regenerate data/processed/* from data/raw/*.
 
 Run from the repo root: python scripts/make_processed.py
-Output schemas are in docs/TEAM_PLAN.md (Data contracts).
+Output schemas are in docs/BUILD_PLAN.md section 4.2. Write every CSV with index=False and lineterminator="\\n".
 """
 
-raise SystemExit("TODO (Role A): implement the raw to processed transforms.")
+print("make_processed.py: not implemented yet (Role A).")
