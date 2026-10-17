@@ -1,0 +1,33 @@
+Palette validation (supports marking check 3.6, colour-vision-deficiency check)
+Run on 18 Oct 2026 with the validate_palette.js script from the dataviz skill, light mode,
+chart surface #fcfcfb. Categorical palettes are checked for lightness band, chroma floor,
+adjacent-pair separation under colour-vision-deficiency simulation, normal-vision separation
+and contrast against the surface.
+
+--- blue, orange, bluish green, vermillion: #0072B2,#E69F00,#009E73,#D55E00 ---
+  [PASS] Lightness band         all 4 inside L 0.43-0.77
+  [PASS] Chroma floor           all 4 >= 0.1
+  [PASS] CVD separation         worst adjacent #D55E00 / #009E73  Delta-E 11.0 (deutan), tritan 27.6
+  [PASS] Normal-vision floor    worst adjacent #009E73 / #E69F00  Delta-E 24.2 (normal)
+  [WARN] Contrast vs surface    below 3:1, relief required (visible labels or table view): #E69F00 at 2.19
+
+--- five: #0072B2,#D55E00,#009E73,#E69F00,#56B4E9 ---
+  [PASS] Lightness band, chroma floor
+  [PASS] CVD separation         worst adjacent #009E73 / #D55E00  Delta-E 11.0 (deutan), tritan 26.2
+  [PASS] Normal-vision floor    worst adjacent #E69F00 / #009E73  Delta-E 24.2
+  [WARN] Contrast vs surface    #E69F00 at 2.19, #56B4E9 at 2.25
+
+--- six: #0072B2,#D55E00,#009E73,#E69F00,#56B4E9,#CC79A7 ---
+  [PASS] Lightness band, chroma floor
+  [PASS] CVD separation         worst adjacent #CC79A7 / #56B4E9  Delta-E 9.6 (deutan), tritan 25.0
+  [PASS] Normal-vision floor    worst adjacent #CC79A7 / #56B4E9  Delta-E 20.0
+  [WARN] Contrast vs surface    #E69F00 at 2.19, #56B4E9 at 2.25, #CC79A7 at 2.98
+
+--- seven, adding yellow #F0E442 (rejected) ---
+  [FAIL] Lightness band         outside band: #F0E442 at L 0.902
+  [WARN] Contrast vs surface    #F0E442 at 1.29
+
+Decision: core charts use only blue, vermillion, green and greys (all at or above 3:1 on the paper
+colour #FCFCFB: blue 5.05, vermillion 3.77, green 3.33, context grey #7D8796 3.54). Orange, sky blue
+and purple are reserved and used only with direct labels. Yellow and black are not used for data.
+Relief for every WARN: every value is labelled and every chart has a "Show the numbers" table.

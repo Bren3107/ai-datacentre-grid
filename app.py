@@ -1,6 +1,6 @@
 import streamlit as st
 
-QUESTION = "Is AI data-centre growth a grid problem, or still a small share of electricity demand?"
+from content import QUESTION
 
 st.set_page_config(page_title="AI data centres and the grid", layout="wide")
 

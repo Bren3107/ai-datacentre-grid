@@ -6,7 +6,7 @@ Role D compiles this from the other documents. Every member checks their own par
 
 - Sources: TODO (list from [DATA_DICTIONARY.md](DATA_DICTIONARY.md), with licences)
 - Processing: `scripts/make_processed.py` regenerates every processed file from `data/raw/`. No processed file is edited by hand. TODO confirm once the script exists
-- Known limits: TODO (use the "what the data cannot show" list in [TEAM_PLAN.md](TEAM_PLAN.md))
+- Known limits: TODO (use the "what the data cannot show" list in [BUILD_PLAN.md](BUILD_PLAN.md) section 1.5 and `content.py`)
 
 ## AI use
 
