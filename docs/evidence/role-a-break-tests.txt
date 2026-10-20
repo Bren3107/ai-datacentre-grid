@@ -1,0 +1,40 @@
+Role A: deliberate breakage, run 20 Oct 2026 on commit e8104e6. Each change was made with a one-off byte replacement, shown by git diff --stat, and reverted with git checkout afterwards.
+
+== Break 1: script no longer strips the owner tag; files regenerated in place (so the regeneration tests agree with the broken files; the contract tests must catch it)
+ scripts/make_processed.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+FAILED tests/test_data_contract.py::test_no_tag_left_in_owner - AssertionErro...
+FAILED tests/test_data_contract.py::test_owner_and_tag_rebuild_the_raw_owner
+2 failed, 40 passed in 6.78s
+
+== Break 2: script drops 0 MW sites (sites = sites[has_power]); files regenerated in place
+ scripts/make_processed.py | 1 +
+ 1 file changed, 1 insertion(+)
+FAILED tests/test_data_contract.py::test_sites_has_one_row_per_raw_row - Asse...
+FAILED tests/test_data_contract.py::test_blank_owner_becomes_unattributed - A...
+FAILED tests/test_data_contract.py::test_zero_mw_sites_are_kept - assert np.i...
+3 failed, 39 passed in 7.27s
+
+== Break 3: one raw value edited (Colossus 2 946 MW -> 947 MW in data/raw/epoch_data_centers.csv), processed files not regenerated
+ data/raw/epoch_data_centers.csv | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+FAILED tests/test_data_contract.py::test_total_power_equals_raw_total - asser...
+FAILED tests/test_data_contract.py::test_raw_file_is_unchanged_since_download[epoch_data_centers-epoch_data_centers.csv]
+FAILED tests/test_regeneration.py::test_script_reproduces_the_committed_files
+3 failed, 39 passed in 7.16s
+
+== Break 4: a processed file edited by hand (World 2025 share 1.5264845 -> 1.6264845 in dc_share.csv)
+ data/processed/dc_share.csv | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+FAILED tests/test_data_contract.py::test_dc_share_values_equal_raw_values - A...
+FAILED tests/test_regeneration.py::test_script_reproduces_the_committed_files
+2 failed, 40 passed in 7.17s
+
+== Break 5: the CI step. Script changed (owner tag kept) but processed files left as committed; rerun as CI does
+git status --porcelain data/processed:
+ M data/processed/sites.csv
+CI step: FAIL (exit 1), as intended
+
+== Restored
+42 passed in 7.86s
+?? docs/evidence/role-a-break-tests.txt
