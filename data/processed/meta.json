@@ -1,0 +1,34 @@
+{
+  "epoch_data_centers": {
+    "url": "https://epoch.ai/data/data_centers/data_centers.csv",
+    "licence": "Creative Commons Attribution 4.0 (CC BY 4.0), Epoch AI",
+    "retrieved": "2026-10-20",
+    "source_updated": "2026-10-19",
+    "raw_file": "data/raw/epoch_data_centers.csv",
+    "raw_bytes": 70663,
+    "raw_sha256": "79ec7dbb53fceac80b7efbd5445e1e3e8de9aa3835b0a27061a8fe24b313e857"
+  },
+  "owid_data_centers_share": {
+    "url": "https://ourworldindata.org/grapher/data-centers-share-electricity-demand.csv?v=1&csvType=full&useColumnShortNames=true",
+    "licence": "OWID processing CC BY 4.0; IEA inputs (c) OECD/IEA under the IEA Terms of Use for Non-CC Material (https://www.iea.org/terms); Ember inputs CC BY 4.0",
+    "retrieved": "2026-10-20",
+    "source_updated": "2026-06-30",
+    "raw_file": "data/raw/owid_data_centers_share_electricity_demand.csv",
+    "raw_bytes": 1511,
+    "raw_sha256": "137de80973d705963bd8abae825c70a57e2afc7f7f93aa043bdc95f3d3b3c987"
+  },
+  "epoch_data_center_timelines": {
+    "url": "https://epoch.ai/data/data_centers/data_center_timelines.csv",
+    "licence": "Creative Commons Attribution 4.0 (CC BY 4.0), Epoch AI",
+    "retrieved": "2026-10-20",
+    "source_updated": "2026-10-19",
+    "raw_file": "data/raw/epoch_data_center_timelines.csv",
+    "raw_bytes": 189968,
+    "raw_sha256": "5d7569879897f8a3993dd45906195a4172481cae73073548c1a6ce8c332d0a1c"
+  },
+  "checks": {
+    "timeline_it_power_at_retrieval_mw": 14203.431374,
+    "sites_power_total_mw": 14203.431374,
+    "difference_mw": 0.0
+  }
+}
