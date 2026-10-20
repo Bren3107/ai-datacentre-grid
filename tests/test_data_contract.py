@@ -164,6 +164,11 @@ def test_zero_mw_sites_are_kept(sites):
     assert (~sites["has_power"]).sum() == raw_zero
 
 
+def test_compute_and_cost_are_not_negative(sites):
+    assert (sites["h100_equivalents"] >= 0).all()
+    assert (sites["capex_usd_bn_2025"] >= 0).all()
+
+
 def test_total_power_equals_raw_total(sites):
     raw_total = sum(float(r["Current power (MW)"]) for r in raw_rows(RAW_FILES["epoch_data_centers"]))
     assert sites["power_mw"].sum() == pytest.approx(raw_total, abs=1e-6)
@@ -186,6 +191,11 @@ def test_timeline_has_one_row_per_year_end_2019_to_2029(timeline):
 def test_forecast_flag_follows_the_retrieval_date(timeline, meta):
     retrieved = meta["epoch_data_center_timelines"]["retrieved"]
     assert (timeline["is_forecast"] == (timeline["year_end"] > retrieved)).all()
+
+
+def test_timeline_counts_and_totals_are_in_range(timeline, sites):
+    assert (timeline["power_mw_total"] >= 0).all()
+    assert timeline["n_sites"].between(0, len(sites)).all()
 
 
 def test_timeline_never_falls(timeline):

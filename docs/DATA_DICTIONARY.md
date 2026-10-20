@@ -4,7 +4,20 @@ Every raw and processed file, with the fields the brief asks for: source and URL
 
 All three raw files were downloaded on **2026-10-20** (02:21 UTC, 13:21 in Sydney, from the HTTP `Date` header) and are committed byte for byte. `data/processed/meta.json` records each file's size and SHA-256, and `tests/test_data_contract.py` fails if a raw file changes.
 
-Not checked: the folder layout follows BUILD_PLAN section 5.2, not the Assignment 2 Part C data-organisation standard, because that brief is not in the project folder. Brendan to confirm against it.
+## Data organisation
+
+The Assignment 3 brief asks for the data folder to be organised "to the standard Assignment 2 Part C required". The table maps each part of that standard (from the A2 Part C brief, sections "What you submit", "The manifest", "The offline sample", "Acquisition and transformation", "Validation" and "Reproducibility and security") to what this repo does. **This mapping is Role A's reading of the brief. The teaching team has not confirmed that it meets the standard.**
+
+| A2 Part C standard | This repo | Same or different |
+|---|---|---|
+| `data/sample.csv`: a small, genuine extract that lets the app run offline | `data/raw/`: the three source files, complete and unedited (94, 40 and 560 rows; 70,663, 1,511 and 189,968 bytes). They are small enough to ship whole, so the "sample" is the full download, not a subset. No code in the repo downloads data at run time (a search of the Python files for network calls on 20 Oct found none) | Same purpose; different name, and three files instead of one |
+| `data/processed.csv`: the dataset the app reads | `data/processed/dc_share.csv`, `sites.csv` and `capacity_timeline.csv`, plus `meta.json` (source metadata) | Same purpose; different names, several files |
+| `src/data.py`: the pipeline that acquires, shapes and validates the data and writes the processed file | `scripts/make_processed.py` shapes the raw files and writes every processed file. Acquisition is the one-off manual download recorded in this dictionary and `meta.json` (the script makes no network calls). The script stops with an error if the OWID column names change or a site name repeats; the other validation (columns, types, keys, ranges, row counts, raw-file hashes) is in `tests/test_data_contract.py`, which CI runs on every pull request | Different: A2 Part C puts validation inside the pipeline so a failure stops it; here a validation failure stops the merge (CI) rather than the script |
+| A transform command that rebuilds every processed output offline within 30 seconds | `python scripts/make_processed.py`: offline, 1.2 to 1.4 s per run on Brendan's laptop (three runs timed on 20 Oct 2026). CI reruns it and fails if `git status --porcelain data/processed` shows any change; `tests/test_regeneration.py` checks a second run writes the same bytes | Same |
+| "Do not silently drop invalid rows" | No row is dropped from `dc_share.csv` or `sites.csv` (tests compare row counts with the raw files). The capacity timeline skips one timelines row (QTS Cedar Rapids, 2026-04-16) whose IT power cell is blank, so that site keeps its previous value; this is stated in the `capacity_timeline.csv` section below | Same, with the one documented skip |
+| `dashboard.yml`: a manifest declaring sources, access conditions, datasets, keys, columns, types, units, plausible ranges, views, controls and the transform command | No manifest file. The same information lives in this dictionary (sources, update frequency, access type, licence, columns, types, units, keys, plausible ranges), `data/processed/meta.json` (URL, licence, retrieval and update dates) and `docs/BUILD_PLAN.md` (views and controls) | Different: no `dashboard.yml` |
+| Per source: publisher, title, URL, date retrieved, expected update frequency, licence, and whether live, archived, licensed or a submitted snapshot | In each raw-file section below | Same |
+| No licensed data that may not be redistributed | Open for the OWID file: see question 3 | Not settled |
 
 ## Answers to the four open questions (BUILD_PLAN section 4.5)
 
@@ -26,6 +39,8 @@ Not checked: the folder layout follows BUILD_PLAN section 5.2, not the Assignmen
 | Latest observation | Latest underlying record 2026-10-19 (from the timelines file) |
 | Retrieved on | 2026-10-20 |
 | Source last updated | 2026-10-19 (Epoch downloads page) |
+| Update frequency | Not stated by the publisher. Observed: the solo fallback repo recorded this file as updated 2026-10-12 when it downloaded it on 18 Oct; the Epoch downloads page showed 2026-10-19 on 20 Oct, so it can change within a week (an observation of two dates, not a schedule) |
+| Access type | Submitted snapshot of a live source: Epoch republishes the file at the same URL, and the repo holds the copy downloaded on 2026-10-20. Free, no account, CC BY 4.0 |
 | Transform | None. Source copy |
 
 ## data/raw/owid_data_centers_share_electricity_demand.csv
@@ -41,6 +56,8 @@ Not checked: the folder layout follows BUILD_PLAN section 5.2, not the Assignmen
 | Latest observation | 2025 (World 1.5264845%, United States 4.9384785%). See question 4 |
 | Retrieved on | 2026-10-20 |
 | Source last updated | 2026-06-30 (chart page "Last updated"; next update expected 2027-06-30). The indicator's metadata record was updated 2026-09-10 |
+| Update frequency | Yearly: OWID's indicator metadata sets `updatePeriodDays` to 365, and the chart page gives the next expected update as 2027-06-30 |
+| Access type | Submitted snapshot of a live source: OWID serves the CSV at the URL above and updates it in place; the repo holds the 2026-10-20 copy. Free, no account. The IEA inputs inside it are licensed under the IEA's non-CC terms (question 3) |
 | Transform | None. Source copy |
 
 ## data/raw/epoch_data_center_timelines.csv
@@ -56,6 +73,8 @@ Not checked: the folder layout follows BUILD_PLAN section 5.2, not the Assignmen
 | Latest observation | Latest row on or before the download date: 2026-10-19 |
 | Retrieved on | 2026-10-20 |
 | Source last updated | 2026-10-19 (Epoch downloads page) |
+| Update frequency | Not stated by the publisher. Observed: the solo fallback repo recorded 2026-10-15 on 18 Oct; the downloads page showed 2026-10-19 on 20 Oct, so it can change within a week (an observation of two dates, not a schedule) |
+| Access type | Submitted snapshot of a live source (same URL, updated in place); the repo holds the 2026-10-20 copy. Free, no account, CC BY 4.0 |
 | Transform | None. Source copy |
 
 ## data/processed/dc_share.csv
@@ -65,6 +84,7 @@ Not checked: the folder layout follows BUILD_PLAN section 5.2, not the Assignmen
 | Source | Derived from `data/raw/owid_data_centers_share_electricity_demand.csv` |
 | Licence | As the raw file |
 | Columns and units | 40 rows. `entity` (text); `code` (text, blank for 7 entities); `year` (integer); `share_pct` (float, **percent** of that entity's electricity demand in that year) |
+| Plausible ranges | `share_pct` 0 to 100 (a percentage; enforced by `test_dc_share_is_a_percentage`); observed 0.08527997 (Central and South America (IEA), 2023) to 4.9384785 (United States, 2025). `year` one of 2020, 2023, 2024, 2025 (enforced) |
 | Primary key | `entity` + `year` |
 | Time coverage | 2020, 2023, 2024, 2025 (no 2021 or 2022) |
 | Latest observation | 2025 |
@@ -78,6 +98,7 @@ Not checked: the folder layout follows BUILD_PLAN section 5.2, not the Assignmen
 | Source | Derived from `data/raw/epoch_data_centers.csv` |
 | Licence | As the raw file |
 | Columns and units | 94 rows. `site` (text, from `Name`); `owner` (text, `Owner` without its trailing tag, trimmed; blank becomes `Unattributed`, 9 rows); `owner_confidence` (text: `confident`, `likely` or `speculative`, empty for 10 rows: 9 blank owners and 1 untagged); `country` (text); `power_mw` (float, **estimated IT power, MW**, from `Current power (MW)`; 0 for 20 sites); `h100_equivalents` (float, H100 equivalents); `capex_usd_bn_2025` (float, 2025 USD billions); `has_power` (bool, `power_mw > 0`; 74 true) |
+| Plausible ranges | `power_mw` 0 or more (enforced), observed 0 to 1,037; `h100_equivalents` 0 or more (enforced), observed 0 to 1,111,673; `capex_usd_bn_2025` 0 or more (enforced), observed 0 to 39.28; `has_power` true exactly when `power_mw` is above 0 (enforced). No upper bounds are enforced, because the publisher states none |
 | Primary key | `site` |
 | Time coverage | Snapshot as of 2026-10-20; per-site record dates 2025-11-16 to 2026-10-19 |
 | Latest observation | 2026-10-19 |
@@ -91,6 +112,7 @@ Not checked: the folder layout follows BUILD_PLAN section 5.2, not the Assignmen
 | Source | Derived from `data/raw/epoch_data_center_timelines.csv` |
 | Licence | As the raw file |
 | Columns and units | 11 rows. `year_end` (date, YYYY-12-31); `power_mw_total` (float, megawatts of **estimated IT power**, summed over sites); `is_forecast` (bool, true when `year_end` is after the retrieval date 2026-10-20, so from 2026-12-31); `n_sites` (integer, sites with IT power above 0 at that date) |
+| Plausible ranges | `power_mw_total` 0 or more and never falling from one year-end to the next (both enforced), observed 0 to 37,572.63; `n_sites` 0 to the number of sites in `sites.csv`, 94 (enforced), observed 0 to 94; `year_end` exactly 2019-12-31 to 2029-12-31 (enforced) |
 | Primary key | `year_end` |
 | Time coverage | 2019-12-31 to 2029-12-31. One raw row dated 2030-01-01 (Stream Phoenix) falls outside the series |
 | Latest observation | Last observed year-end 2025-12-31: 6,774.32971 MW at 46 sites. Later year-ends are forecasts |
