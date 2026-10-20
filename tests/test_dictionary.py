@@ -49,6 +49,33 @@ def test_section_has_every_field_filled(data_file):
         assert match.group(1).strip(), f"{data_file}: field '{field}' empty"
 
 
+RAW_ONLY_FIELDS = ["Update frequency", "Access type"]  # A2 Part C: per-source metadata
+PROCESSED_CSVS = [f for f in DATA_FILES if f.startswith("data/processed/") and f.endswith(".csv")]
+
+
+def field_value(data_file, field):
+    body = next(text for heading, text in sections().items() if data_file in heading)
+    match = re.search(rf"^\| {re.escape(field)}[^|]* \| (.+) \|$", body, flags=re.M)
+    return match.group(1).strip() if match else ""
+
+
+@pytest.mark.parametrize("data_file", [f for f in DATA_FILES if f.startswith("data/raw/")])
+def test_raw_section_states_update_frequency_and_access_type(data_file):
+    for field in RAW_ONLY_FIELDS:
+        assert field_value(data_file, field), f"{data_file}: field '{field}' missing or empty"
+
+
+@pytest.mark.parametrize("data_file", PROCESSED_CSVS)
+def test_processed_section_states_plausible_ranges(data_file):
+    assert field_value(data_file, "Plausible ranges"), f"{data_file}: no plausible ranges"
+
+
+def test_data_organisation_section_maps_to_assignment_2_part_c():
+    body = sections().get("Data organisation", "")
+    for term in ("data/sample.csv", "data/processed.csv", "src/data.py", "dashboard.yml", "scripts/make_processed.py"):
+        assert term in body, f"Data organisation section does not mention {term}"
+
+
 def test_the_four_open_questions_are_answered():
     text = DICTIONARY.read_text(encoding="utf-8")
     for n in range(1, 5):
