@@ -1,0 +1,95 @@
+site,owner,owner_confidence,country,power_mw,h100_equivalents,capex_usd_bn_2025,has_power
+Colossus 2,SpaceXAI,confident,United States,946.0,1111672.5618999496,35.836372,True
+Anthropic-Amazon New Carlisle,Amazon,confident,United States,1037.0,818428.4992420415,39.283634,True
+Microsoft Fairwater Atlanta,Microsoft,confident,United States,636.0,768768.7220818596,24.092952,True
+Google Pryor (North),Google,confident,United States,368.0,636685.1945426983,13.940576,True
+DayOne Nusajaya,Unattributed,,Malaysia,473.0,583836.7862556847,17.918186,True
+Meta Prometheus,Meta,confident,United States,471.0,536343.0015159171,17.842422,True
+OpenAI Stargate Abilene,Oracle,confident,United States,421.0,509348.1556341586,15.948322,True
+DayOne Kempas,Unattributed,,Malaysia,421.691664,480638.7064173825,15.974523615648,True
+Microsoft Fairwater Wisconsin,Microsoft,confident,United States,369.0,445679.63617988885,13.978458,True
+Google Columbus,Google,confident,United States,303.0,331985.85144012125,11.478246,True
+Google New Albany,Google,confident,United States,333.0,323900.9600808489,12.614706,True
+Google Mesa,Google,confident,United States,183.0,289540.17180394137,6.932405999999999,True
+Colossus 1,SpaceXAI,confident,United States,340.0,275795.85649317835,12.87988,True
+Google Council Bluffs (East),Google,confident,United States,237.0,255684.6892369884,8.978034,True
+CoreWeave Denton TX,CoreWeave,confident,United States,262.0,252652.85497726125,9.925084,True
+QTS Richmond 1,Unattributed,,United States,238.0,242546.7407781708,9.015916,True
+Bridge Data Centres MY06,ByteDance,likely,Malaysia,243.0,221051.54118241536,9.205326,True
+Meta Rosemount,Meta,confident,United States,178.0,215675.11520970188,6.742996,True
+Amazon Madison Mega Site,Amazon,confident,United States,284.0,214348.14354550533,10.758488,True
+Google Bristow,Google,,United States,238.0,209860.5356240525,9.015916,True
+Microsoft Goodyear,Microsoft,confident,United States,202.0,205154.1182415361,7.652164000000001,True
+Meta Jeffersonville,Meta,confident,United States,178.0,203132.89540171804,6.742996,True
+Google Kansas City East,Google,confident,United States,105.0,202627.5896917635,3.97761,True
+Meta Temple,Meta,confident,United States,178.0,202472.98777125112,6.742996,True
+AWS New Albany,Amazon,confident,United States,213.0,201111.6725619,8.068866,True
+Google Omaha,Google,confident,United States,237.0,198585.14401212733,8.978034,True
+Google Lincoln,Google,confident,United States,141.0,197574.53259221828,5.341361999999999,True
+QTS Richmond 2,Unattributed,,United States,180.0,182920.66700353715,6.818759999999999,True
+Google The Dalles,Google,confident,United States,154.0,175341.0813542193,5.8338280000000005,True
+QTS Richmond 3,Unattributed,,United States,144.0,174835.77564426477,5.455007999999999,True
+Meta Montgomery,Meta,confident,United States,153.0,174517.43304699342,5.795946,True
+Meta Kuna,Meta,confident,United States,152.0,173247.67205659422,5.758064,True
+Meta Cheyenne,Meta,confident,United States,152.0,172814.5528044467,5.758064,True
+Amazon Ridgeland,Amazon,confident,United States,228.0,171298.6356745831,8.637096,True
+Meta Huntsville,Meta,confident,United States,146.0,166760.9903991915,5.530772,True
+Coreweave Helios,CoreWeave,confident,United States,132.0,159551.768236855,5.000424000000001,True
+Microsoft Project Osmium,Microsoft,confident,United States,190.0,155634.15866599293,7.19758,True
+Meta Eagle Mountain,Meta,confident,United States,133.0,151354.21930267813,5.038306,True
+Google Midlothian,Google,confident,United States,103.0,143580.85118746842,3.901846,True
+Google Storey County,Google,confident,United States,161.0,133906.01313794847,6.0990020000000005,True
+Google Lancaster,Google,confident,United States,137.0,130368.8731682668,5.189834,True
+Meta-QTS Hillsboro 2,Meta,likely,United States,180.0,123839.0,6.818759999999999,True
+Google Waltham Cross,Google,confident,United Kingdom,88.0,123799.898938858,3.333616,True
+VNET Bayin Ulanqab,VNET,confident,China,221.0,122789.28751894896,8.371922,True
+Google Arcola,Google,confident,United States,77.0,108135.4219302678,2.916914,True
+Google Red Oak,Google,confident,United States,77.0,108135.4219302678,2.916914,True
+Google Papillion,Google,confident,United States,237.0,100555.83628094998,8.978034,True
+Meta Gallatin,Meta,confident,United States,87.0,99545.22486104092,3.2957339999999995,True
+Meta Los Lunas,Meta,confident,United States,87.0,99545.22486104092,3.2957339999999995,True
+CoreWeave Ellendale ND,CoreWeave,confident,United States,68.0,93481.55634158666,2.5759760000000003,True
+Meta Sarpy,Meta,confident,United States,80.0,91965.63921172309,3.03056,True
+Huawei Horinger,Huawei,confident,China,184.3,89439.11066195049,6.9816526,True
+CoreWeave Chester VA,CoreWeave,confident,United States,82.0,88428.49924204143,3.106324,True
+Oracle Batam,Oracle,likely,Indonesia,72.0,84386.05356240526,2.727504,True
+AWS Berwick,Amazon,confident,United States,108.0,81354.21930267812,4.091256,True
+CoreWeave Marble NC,CoreWeave,confident,United States,65.0,78827.6907529055,2.46233,True
+Meta Aiken,Meta,confident,United States,69.0,78322.38504295099,2.613858,True
+Huawei Wuhu,Huawei,confident,China,157.0,76326.42748863062,5.947474,True
+Core42 Lake Mariner,Core42,confident,United States,58.0,71753.4108135422,2.197156,True
+Microsoft SAT40,Microsoft,confident,United States,75.0,64679.13087417888,2.84115,True
+STACK Infrastructure NVA02,Unattributed,,United States,85.0,61141.99090449722,3.21997,True
+Anthropic Lake Mariner,AI XPV Platform,confident,United States,42.0,58564.93178372915,1.591044,True
+Microsoft-Nebius New Jersey,Nebius,confident,United States,50.0,56846.89236988378,1.8941,True
+CoreWeave Norway,CoreWeave,confident,Norway,42.0,50773.11773623042,1.591044,True
+Nebius Mantsala,Nebius,confident,Finland,75.0,48527.92066700354,2.84115,True
+Southgate Melbourne,Firmus,confident,Australia,41.0,46488.12531581607,1.553162,True
+Stream Phoenix,Unattributed,,United States,64.0,46134.4113188479,2.424448,True
+Microsoft SAT14,Microsoft,confident,United States,47.0,45174.33046993431,1.7804540000000002,True
+Vantage TX1,Unattributed,,United States,32.0,38706.417382516425,1.212224,True
+CoreWeave Dalton 1 & 2,CoreWeave,confident,United States,28.0,32238.504295098533,1.060696,True
+Alibaba Zhangbei,Alibaba,confident,China,169.0,31884.79029813037,6.402058,True
+Start Campus Sines Data Campus,Nscale,confident,Portugal,33.0,31834.259727134915,1.2501060000000002,True
+xAI QTS Atlanta,SpaceXAI,confident,United States,17.32971,11470.43961596766,0.6564840742199999,True
+Nscale Keflavik,Nscale,confident,Iceland,5.11,5821.121778676099,0.19357702,True
+Anthropic Barber Lake,Cipher Mining,confident,United States,0.0,0.0,0.0,False
+CoreWeave Lancaster Greenfield site,CoreWeave,confident,United States,0.0,0.0,0.0,False
+CoreWeave Muskogee OK,CoreWeave,confident,United States,0.0,0.0,0.0,False
+Crusoe Abilene Expansion,Microsoft,confident,United States,0.0,0.0,0.0,False
+EcoDataCenter 2,Mistral AI,confident,Sweden,0.0,0.0,0.0,False
+Goodnight,Google,speculative,United States,0.0,0.0,0.0,False
+Google Cedar Rapids,Google,confident,United States,0.0,0.0,0.0,False
+Google Fort Wayne,Google,confident,United States,0.0,0.0,0.0,False
+Meta Bowling Green,Meta,confident,United States,0.0,0.0,0.0,False
+Meta Hyperion,Meta,confident,United States,0.0,0.0,0.0,False
+Microsoft Narvik Norway,Nscale,likely,Norway,0.0,0.0,0.0,False
+OpenAI Stargate Lordstown,Softbank,confident,United States,0.0,0.0,0.0,False
+OpenAI Stargate Michigan,Oracle,confident,United States,0.0,0.0,0.0,False
+OpenAI Stargate Milam,Softbank,confident,United States,0.0,0.0,0.0,False
+OpenAI Stargate New Mexico,Oracle,confident,United States,0.0,0.0,0.0,False
+OpenAI Stargate Shackelford,Oracle,confident,United States,0.0,0.0,0.0,False
+OpenAI Stargate UAE,G42,likely,United Arab Emirates,0.0,0.0,0.0,False
+OpenAI Stargate Wisconsin,Oracle,confident,United States,0.0,0.0,0.0,False
+QTS Cedar Rapids,Unattributed,,United States,0.0,0.0,0.0,False
+QTS Eagle Mountain,Meta,speculative,United States,0.0,0.0,0.0,False
