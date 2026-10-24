@@ -1,0 +1,28 @@
+Role B break tests, 2026-10-24. Each break was made in charts/trend.py, the tests were run, then the file was restored.
+
+1. Drop the label on the last point (text list loses its last item)
+FAILED tests/test_charts.py::test_c1_trend_meets_the_contract
+FAILED tests/test_charts.py::test_c1_trend_meets_the_contract_with_six_regions
+FAILED tests/test_charts.py::test_c1_one_label_per_point_one_decimal
+FAILED tests/test_charts.py::test_c1_world_2025_label_traces_to_the_raw_file
+4 failed, 16 passed in 1.98s
+
+2. Paint every line magenta (#FF00FF, not in theme.py)
+FAILED tests/test_charts.py::test_c1_trend_meets_the_contract
+FAILED tests/test_charts.py::test_c1_trend_meets_the_contract_with_six_regions
+FAILED tests/test_charts.py::test_c1_colours_follow_the_entity
+3 failed, 17 passed in 2.05s
+
+3. Drop the unit from the y-axis title
+FAILED tests/test_charts.py::test_c1_trend_meets_the_contract
+FAILED tests/test_charts.py::test_c1_trend_meets_the_contract_with_six_regions
+FAILED tests/test_charts.py::test_c1_axis_titles_carry_the_unit
+3 failed, 17 passed in 1.91s
+
+4. Round labels to whole numbers (1.5% would show as 2%)
+FAILED tests/test_charts.py::test_c1_one_label_per_point_one_decimal
+FAILED tests/test_charts.py::test_c1_world_2025_label_traces_to_the_raw_file
+2 failed, 18 passed in 2.21s
+
+Restored:
+20 passed in 1.92s
