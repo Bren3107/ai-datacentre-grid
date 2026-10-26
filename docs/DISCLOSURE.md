@@ -39,4 +39,4 @@ Each member confirms that the AI use recorded for their own part is complete and
 - Brendan: confirmed ______ (date)
 - Daniel: confirmed ______ (date)
 - yux7540-design: confirmed ______ (date)
-- Avishek: confirmed ______ (date)
+- Avishek: confirmed ______ (Oct 26 2026)
