@@ -1,10 +1,11 @@
 """Role B: interaction tests (BUILD_PLAN 5.5; marking checks 1.2, 4.3, 4.4).
 
 Each interaction must respond in under 2 s (the brief asks for about a second; 2 s is our
-ceiling inside a test runner). Tests for parts other roles have not merged yet skip with a
-reason instead of failing, and start running as soon as the widget appears in app.py.
+ceiling inside a test runner). Integrated controls are required: missing widgets now fail
+rather than silently skipping. Scale uses Streamlit segmented_control.
 """
 import time
+import csv
 from pathlib import Path
 
 import pytest
@@ -87,29 +88,55 @@ def _widget(at, kind, key):
         return None
 
 
-def _scale_selector(at):
-    for kind in ("radio", "selectbox"):
-        for w in getattr(at, kind):
-            if "scale" in (w.label or "").lower() or "lens" in (w.key or "").lower():
-                return w
-    return None
+@pytest.mark.parametrize('option, label', [
+    ('World', 'of world electricity demand went to data centres'),
+    ('Country or region', 'of electricity demand in United States'),
+    ('Site', 'estimated IT power of the largest tracked AI data centre'),
+])
+def test_each_scale_option_renders_fast(app, option, label):
+    selector = app.segmented_control(key='scale')
+    assert selector.options == ['World', 'Country or region', 'Site']
+    selector.set_value(option)
+    elapsed = timed_run(app)
+    assert not app.exception, f"Scale '{option}' raised"
+    assert app.segmented_control(key='scale').value == option
+    hero = [m.value for m in app.markdown if 'font-size:3rem' in m.value]
+    assert len(hero) == 1 and label in hero[0]
+    assert bool(list(app.selectbox)) == (option == 'Country or region')
+    assert elapsed < LIMIT_S, f"Scale '{option}' took {elapsed:.2f} s"
 
 
-def test_each_scale_option_renders_fast(app):
-    scale = _scale_selector(app)
-    if scale is None:
-        pytest.skip("waiting for Role D's Scale selector in app.py")
-    for option in scale.options:
-        _scale_selector(app).set_value(option)
-        elapsed = timed_run(app)
-        assert not app.exception, f"Scale '{option}' raised"
-        assert elapsed < LIMIT_S, f"Scale '{option}' took {elapsed:.2f} s"
+with (ROOT / 'data/processed/dc_share.csv').open(encoding='utf-8-sig', newline='') as handle:
+    SHARE_ROWS = list(csv.DictReader(handle))
+LAST_YEAR = max(int(row['year']) for row in SHARE_ROWS)
+REGION_SHARES = {
+    row['entity']: float(row['share_pct']) for row in SHARE_ROWS
+    if int(row['year']) == LAST_YEAR and row['entity'] not in ('World', 'World excl. United States and China')
+}
+
+
+@pytest.mark.parametrize('region', sorted(REGION_SHARES))
+def test_region_picker_updates_the_lens_and_trace(app, region):
+    app.segmented_control(key='scale').set_value('Country or region').run()
+    assert not app.exception
+    picker = app.selectbox(key='lens_entity')
+    assert set(picker.options) == set(REGION_SHARES)
+    picker.set_value(region)
+    elapsed = timed_run(app)
+    assert not app.exception
+    hero = next(m.value for m in app.markdown if 'font-size:3rem' in m.value)
+    assert f'{REGION_SHARES[region]:.1f}%' in hero
+    assert f'of electricity demand in {region}' in hero
+    trace = next(frame.value for frame in app.dataframe if 'Id' in frame.value.columns)
+    row = trace.set_index('Id').loc['entity_share_latest']
+    assert float(row['Exact value']) == pytest.approx(REGION_SHARES[region])
+    assert region in row['How it is calculated']
+    assert elapsed < LIMIT_S, f'{region} took {elapsed:.2f} s'
 
 
 def test_trend_empty_state_inside_the_app(app):
     picker = _widget(app, "multiselect", "trend_regions")
-    if picker is None:
-        pytest.skip("waiting for Role D to call trend.render in app.py")
+    assert picker is not None, "Story 1 region picker must be integrated"
     picker.set_value([])
     elapsed = timed_run(app)
     assert trend.EMPTY_MESSAGE in infos(app)
@@ -118,8 +145,7 @@ def test_trend_empty_state_inside_the_app(app):
 
 def test_site_filters_that_match_nothing_show_the_message(app):
     countries = _widget(app, "multiselect", "sites_countries")
-    if countries is None:
-        pytest.skip("waiting for Role C's site filters in app.py")
+    assert countries is not None, "Story 3 country picker must be integrated"
     countries.set_value([])
     elapsed = timed_run(app)
     assert not app.exception
@@ -127,15 +153,22 @@ def test_site_filters_that_match_nothing_show_the_message(app):
     assert elapsed < LIMIT_S
 
 
-def test_site_minimum_size_above_every_site_shows_the_message(app):
-    slider = _widget(app, "slider", "sites_min_mw")
-    if slider is None:
-        pytest.skip("waiting for Role C's site filters in app.py")
+def test_site_minimum_size_filters_the_largest_sites_table(app):
+    slider = _widget(app, 'slider', 'sites_min_mw')
+    assert slider is not None, 'Story 3 size slider must be integrated'
     slider.set_value(900)
-    _widget(app, "checkbox", "sites_include_zero").uncheck()
+    _widget(app, 'checkbox', 'sites_include_zero').uncheck()
     elapsed = timed_run(app)
     assert not app.exception
     assert elapsed < LIMIT_S
-    # 900 MW may still match a site; the message must appear exactly when nothing matches
-    if not app.get("plotly_chart"):
-        assert any(SITES_EMPTY in m for m in infos(app))
+    with (ROOT / 'data/processed/sites.csv').open(encoding='utf-8-sig', newline='') as handle:
+        expected = [row for row in csv.DictReader(handle) if float(row['power_mw']) >= 900]
+    expected.sort(key=lambda row: (-float(row['power_mw']), row['site']))
+    tables = [frame.value for frame in app.dataframe if 'Site' in frame.value.columns]
+    if expected:
+        assert len(tables) == 1
+        assert tables[0]['Site'].tolist() == [row['site'] for row in expected[:10]]
+        assert tables[0]['Estimated IT power (MW)'].tolist() == [float(row['power_mw']) for row in expected[:10]]
+    else:
+        assert not tables
+        assert any(SITES_EMPTY in message for message in infos(app))

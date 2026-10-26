@@ -37,10 +37,7 @@ def expected_facts():
 
 @pytest.fixture(scope='module')
 def registry():
-    try:
-        return build_facts(pd.read_csv(ROOT / 'data/processed/dc_share.csv'), pd.read_csv(ROOT / 'data/processed/sites.csv'))
-    except NotImplementedError:
-        pytest.xfail('Role D build_facts is still a stub; independent verification is pending')
+    return build_facts(pd.read_csv(ROOT / 'data/processed/dc_share.csv'), pd.read_csv(ROOT / 'data/processed/sites.csv'))
 
 @pytest.mark.parametrize('fact_id', sorted(expected_facts()))
 def test_fact_matches_independent_calculation(registry, fact_id):
@@ -55,3 +52,42 @@ def test_fact_matches_independent_calculation(registry, fact_id):
         assert fact.value == expected
     else:
         assert fact.value == pytest.approx(expected, rel=1e-9)
+
+
+# Derive independent expectations directly with csv, rather than facts._share/pandas.
+with (ROOT / 'data/processed/dc_share.csv').open(encoding='utf-8-sig', newline='') as handle:
+    SHARE_ROWS = list(csv.DictReader(handle))
+SHARES = {(row['entity'], int(row['year'])): float(row['share_pct']) for row in SHARE_ROWS}
+FIRST_YEAR = min(year for entity, year in SHARES)
+LAST_YEAR = max(year for entity, year in SHARES)
+REGIONS = sorted({entity for entity, year in SHARES} - {'World', 'World excl. United States and China'})
+ENTITY_IDS = ('entity_share_first', 'entity_share_latest', 'entity_to_world_ratio')
+
+
+@pytest.fixture(scope='module')
+def regional_registries():
+    demand = pd.read_csv(ROOT / 'data/processed/dc_share.csv')
+    sites = pd.read_csv(ROOT / 'data/processed/sites.csv')
+    return {region: build_facts(demand, sites, entity=region) for region in REGIONS}
+
+
+@pytest.mark.parametrize('region', REGIONS)
+@pytest.mark.parametrize('fact_id', ENTITY_IDS)
+def test_entity_fact_matches_independent_calculation(regional_registries, region, fact_id):
+    expected = {
+        'entity_share_first': SHARES[region, FIRST_YEAR],
+        'entity_share_latest': SHARES[region, LAST_YEAR],
+        'entity_to_world_ratio': SHARES[region, LAST_YEAR] / SHARES['World', LAST_YEAR],
+    }[fact_id]
+    fact = regional_registries[region][fact_id]
+    assert fact.id == fact_id
+    assert fact.value == pytest.approx(expected, rel=1e-9)
+    assert fact.text == (f'{expected:.1f}' if fact_id.endswith('ratio') else f'{expected:.1f}%')
+    assert fact.source_file == 'data/processed/dc_share.csv'
+    assert region in fact.how and fact.unit
+
+
+def test_every_registered_fact_has_independent_coverage(regional_registries):
+    expected_ids = set(expected_facts()) | set(ENTITY_IDS)
+    for region, registry in regional_registries.items():
+        assert set(registry) == expected_ids, region
