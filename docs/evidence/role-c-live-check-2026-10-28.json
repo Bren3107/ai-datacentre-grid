@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-28",
+  "method": "Codex automated Chrome against public deployment; not personal manual acceptance",
+  "url": "https://ai-datacentre-grid-xjqdr9ehtm5vo4tdv2nxpb.streamlit.app/",
+  "charts": 4,
+  "owner_has_unattributed": true,
+  "initial_counts": [
+    "26",
+    "24",
+    "12",
+    "5",
+    "4",
+    "0",
+    "1",
+    "0",
+    "0",
+    "1",
+    "1"
+  ],
+  "with_zero_counts": [
+    "20",
+    "26",
+    "24",
+    "12",
+    "5",
+    "4",
+    "0",
+    "1",
+    "0",
+    "0",
+    "1",
+    "1"
+  ],
+  "at_200_counts": [
+    "0",
+    "0",
+    "12",
+    "5",
+    "4",
+    "0",
+    "1",
+    "0",
+    "0",
+    "1",
+    "1"
+  ],
+  "owner_unchanged": true,
+  "empty_country_message": true
+}
