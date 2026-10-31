@@ -1,0 +1,25 @@
+name: keep-awake
+# Community Cloud puts the app to sleep after 12 hours without traffic, and a sleeping app takes
+# well over 5 s to open. Visiting every 3 hours leaves three spare runs if GitHub delays or drops one.
+# GitHub turns scheduled runs off in a public repo after 60 days without commits; "Run workflow"
+# on the Actions tab turns them back on. Delete this file once marking is over.
+on:
+  schedule:
+    - cron: "17 */3 * * *"
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - .github/workflows/keep-awake.yml
+      - scripts/keep_awake.py
+jobs:
+  visit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install playwright==1.58.0
+      - run: python -m playwright install --with-deps chromium
+      - run: python scripts/keep_awake.py
