@@ -36,6 +36,6 @@ We used AI tools as listed above and in [PROVENANCE.md](PROVENANCE.md). Each mem
 Each member confirms that the AI use recorded for their own part is complete and true:
 
 - Brendan: confirmed 31 Oct 2026
-- Daniel: confirmed ______ (date)
+- Daniel: confirmed confirmed 18 Nov 2026
 - yux7540-design: confirmed ______ (date)
 - Avishek: confirmed 9 Nov 2026
