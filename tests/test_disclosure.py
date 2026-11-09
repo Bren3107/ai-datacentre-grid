@@ -3,7 +3,12 @@ from pathlib import Path
 
 DISCLOSURE = Path(__file__).resolve().parents[1] / "docs" / "DISCLOSURE.md"
 TEXT = DISCLOSURE.read_text(encoding="utf-8")
-MEMBERS = ("Brendan", "Daniel", "yux7540-design", "Avishek")
+MEMBERS = {
+    "Brendan": ("Brendan",),
+    "Daniel": ("Daniel", "Dan "),
+    "Ming": ("yux7540-design", "Xiangqiang", "Ming"),
+    "Avishek": ("Avishek",),
+}
 
 
 def test_no_todo_or_placeholder_left():
@@ -17,9 +22,12 @@ def test_has_the_three_sections():
 
 
 def test_every_member_is_named_in_the_tools_and_in_a_confirmation_line():
-    for member in MEMBERS:
-        assert f"  - {member}:" in TEXT, f"{member} missing from tools used"
-        assert f"- {member}: confirmed" in TEXT, f"{member} missing from confirmations"
+    lines = TEXT.splitlines()
+    for member, aliases in MEMBERS.items():
+        tools = [l for l in lines if l.startswith("  - ") and any(a in l.split(":")[0] for a in aliases)]
+        assert tools, f"{member} missing from tools used"
+        confirms = [l for l in lines if l.startswith("- ") and "confirmed" in l and any(a in l.split(":")[0] for a in aliases)]
+        assert confirms, f"{member} missing from confirmations"
 
 
 def test_processing_bullet_does_not_overclaim():

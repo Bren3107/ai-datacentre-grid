@@ -2,7 +2,12 @@
 from pathlib import Path
 
 PROVENANCE = Path(__file__).resolve().parents[1] / "docs" / "PROVENANCE.md"
-MEMBERS = ("Brendan", "Daniel", "yux7540-design", "Avishek")
+MEMBERS = {
+    "Brendan": ("Brendan",),
+    "Daniel": ("Daniel", "Dan "),
+    "Ming": ("yux7540-design", "Xiangqiang", "Ming"),
+    "Avishek": ("Avishek",),
+}
 COLUMNS = ["Artefact", "Who", "Tool", "What was asked", "What came back",
            "How it was verified", "Outcome"]
 # A verification must name something that could have failed.
@@ -33,8 +38,8 @@ def test_every_row_is_complete():
 
 def test_every_member_has_at_least_one_row():
     _, body = rows()
-    for member in MEMBERS:
-        assert any(row[1].startswith(member) for row in body), f"no row for {member}"
+    for member, aliases in MEMBERS.items():
+        assert any(a in row[1] for row in body for a in aliases), f"no row for {member}"
 
 
 def test_every_verification_names_a_check():
