@@ -49,11 +49,15 @@ python -m pytest -q
 python -m streamlit run app.py
 ```
 
-## Integration status
+## Integration and verification status (26 October 2026)
 
-Role A's data and country chart are available. Role C provides `charts.owners.render(sites)` and `charts.sites.render(sites)` for Role D to call in Stories 2 and 3. Chart builders return a Plotly Figure, or None for empty inputs. The main page, Scale lens and trend chart are still awaiting their owners' implementations at this branch's creation; the walk-throughs above specify the intended integrated experience. No verified deployed URL has yet been provided.
+The main page, Scale lens and all four core charts are integrated. Role C's owner ranking and site explorer were included in PR #7 (commit `07031d7`); PR #5 was closed as superseded, with its author credited in the merged commit. Story 2 receives the unfiltered sites table; Story 3 owns its filters.
 
-`tests/test_facts.py` independently computes the expected registry from processed files using Python's standard library. It marks the unimplemented Role D registry as an expected failure; that is pending integration, not a verified fact registry. Once implemented, missing IDs, incorrect values and missing traceability fail normally. Dynamic entity facts await Role D's entity-selection interface.
+`tests/test_facts.py` independently verifies all 21 fact IDs using the standard-library csv module and arithmetic: 18 shared facts, plus three dynamic facts across all eight selectable regions. The registry must implement every checked fact; there is no longer an expected-failure fallback for an unimplemented registry.
+
+`tests/test_app_interactions.py` exercises all three Scale options through the actual segmented control, all eight region choices, the displayed hero and Trace a number values, empty selections and the minimum-size filter. Missing integrated controls fail instead of being skipped. Each measured rerun must take less than two seconds in the test runner; this does not establish the deployed app's loading speed.
+
+No verified deployed URL is recorded here yet. Once Role A supplies it, add the URL and complete live-app loading, layout and colour-vision checks. The disclosure/provenance update is under review in PR #8 as of 26 October; each member must personally confirm their own record. See [Role C hand-off](docs/ROLE_C_HANDOFF.md) for remaining integration and verification notes.
 
 ## AI provenance and disclosure
 
