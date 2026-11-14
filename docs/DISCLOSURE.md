@@ -44,6 +44,6 @@ Each member confirms that the AI use recorded for their own part is complete and
 
 - Name: Xiangqiang Ming (GitHub: yux7540-design)
 - Date added: 28 October 2026
-- Scope: OpenAI Codex assisted with the owner chart, site explorer, README, independent fact and interaction tests, documentation, presentation slides and speaking notes, including transition sentences.
+- Scope: OpenAI Codex assisted with the owner chart, site explorer, README, independent fact and interaction tests and documentation.
 - Verification: automated checks and their limitations are recorded in the Role C rows of [PROVENANCE.md](PROVENANCE.md). PR #9 is merged and main CI passes. Automated checks must not be described as personal manual verification.
 - Live checks: Codex automated Chrome verified four rendered charts, the separate 20-site zero-power bin, the 24 sites at or above 200 MW, the unchanged owner chart and the empty-country message on 28 October 2026. See `docs/evidence/role-c-live-check-2026-10-28.json`. Owner-specific filtering, table-cell verification and the full Role B visual QA are not covered by this check.
