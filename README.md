@@ -57,7 +57,7 @@ The main page, Scale lens and all four core charts are integrated. Role C's owne
 
 `tests/test_app_interactions.py` exercises all three Scale options through the actual segmented control, all eight region choices, the displayed hero and Trace a number values, empty selections and the minimum-size filter. Missing integrated controls fail instead of being skipped. Each measured rerun must take less than two seconds in the test runner; this does not establish the deployed app's loading speed.
 
-No verified deployed URL is recorded here yet. Once Role A supplies it, add the URL and complete live-app loading, layout and colour-vision checks. The disclosure/provenance update is under review in PR #8 as of 26 October; each member must personally confirm their own record. See [Role C hand-off](docs/ROLE_C_HANDOFF.md) for remaining integration and verification notes.
+[Open the live app](https://ai-datacentre-grid-xjqdr9ehtm5vo4tdv2nxpb.streamlit.app/). The [evidence index](docs/evidence/README.md) lists loading measurements, layout screenshots and colour-vision checks.
 
 ## AI provenance and disclosure
 
